@@ -7,27 +7,29 @@ import com.devsuperior.dsmeta.projections.SaleReportProjection;
 public class SaleReportDTO {
 
 	private Long id;
-	private String name;
-	private Double amount;
 	private LocalDate date;
+	private Double amount;
+	private String sellerName;
+	
+	
 	
 	public SaleReportDTO() {
 		
 	}
 	
-	public SaleReportDTO(Long id, String name, Double amount, LocalDate date) {
+	public SaleReportDTO(Long id, LocalDate date, Double amount, String sellerName ) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.amount = amount;
 		this.date = date;
+		this.amount = amount;
+		this.sellerName = sellerName;
 	}
 	
 	public SaleReportDTO(SaleReportProjection projection) {
 		id = projection.getId();
-		name = projection.getName();
-		amount = projection.getAmount();
 		date = projection.getDate();
+		amount = projection.getAmount();
+		sellerName = projection.getName();
 	}
 
 	public Long getId() {
@@ -37,23 +39,7 @@ public class SaleReportDTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-
+	
 	public LocalDate getDate() {
 		return date;
 	}
@@ -62,5 +48,21 @@ public class SaleReportDTO {
 		this.date = date;
 	}
 	
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	public String getSellerName() {
+		return sellerName;
+	}
+
+	public void setSellerName(String sellerName) {
+		this.sellerName = sellerName;
+	}
 	
+
 }

@@ -1,9 +1,9 @@
 package com.devsuperior.dsmeta.services;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,64 +25,61 @@ public class SaleService {
 	@Autowired
 	private SaleRepository repository;
 	
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	public SaleMinDTO findById(Long id) {
 		Optional<Sale> result = repository.findById(id);
 		Sale entity = result.get();
 		return new SaleMinDTO(entity);
 	}
+	//variáveis precisaram ser inicializadas fora do método dateHandling()
+	LocalDate initialDate = null;
+	LocalDate finalDate = null;
 
-public Page<SaleReportDTO> search2(String minDate, String maxDate, String name, Pageable pageable){
-		
-		LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
-		LocalDate initialDate;
-		LocalDate finalDate;
-		
-		if (maxDate != null) {
-			finalDate = LocalDate.parse(maxDate);
-		}else {
-			
-			finalDate = today;
+	//Recebe Strings e Pageable para tratamento antes de chamar o repository
+	public Page<SaleReportDTO> saleReport(String minDate, String maxDate, String name, Pageable pageable) {
+
+		// método com try-catch sem customização
+		try {
+			//converte as datas String minDate e maxDate em LocalDate initialDate e finalDate de acordo com as regras fornecidas
+			dateHandling(minDate, maxDate);
+
+		} catch (DateTimeParseException e) {
+			System.err.println(e.getMessage());
 		}
-		
-		if (minDate != null) {
-		
-			initialDate = LocalDate.parse(minDate);
-			
-		} else {
-			initialDate = finalDate.minusYears(1L);
-		}
-		
-		Page<SaleReportProjection> result = repository.search2(initialDate, finalDate, name, pageable); 
+		// service recebe os parâmetros e chama o repository, que vai devolver um projection para construção do DTO
+		Page<SaleReportProjection> result = repository.saleReport(initialDate, finalDate, name, pageable);
 		return result.map(x -> new SaleReportDTO(x));
-}
+	}
+
 	
-	
-	public Page<SaleSumDTO> search1(String minDate, String maxDate, Pageable pageable){
+	public Page<SaleSumDTO> saleSum(String minDate, String maxDate, Pageable pageable) {
+		//método sem o try-catch
+		dateHandling(minDate, maxDate);
+
+		Page<SaleSumDTO> result = repository.saleSum(initialDate, finalDate, pageable);
 		
+		return result.map(x -> new SaleSumDTO(x));
+
+	}
+
+	// tratamento da data inicial e final com mesmo comportamento para os dois métodos saleReport() e saleSum()
+	private void dateHandling(String minDate, String maxDate) throws DateTimeParseException {
+
 		LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
-		LocalDate initialDate;
-		LocalDate finalDate;
-		
+
 		if (maxDate != null) {
 			finalDate = LocalDate.parse(maxDate);
-		}else {
-			
+		} else {
+
 			finalDate = today;
 		}
-		
+
 		if (minDate != null) {
-		
+
 			initialDate = LocalDate.parse(minDate);
-			
+
 		} else {
 			initialDate = finalDate.minusYears(1L);
 		}
-
-		
-		Page<SaleSumProjection> result = repository.search1(initialDate, finalDate, pageable); 
-		return result.map(x -> new SaleSumDTO(x));
-		
 	}
 }

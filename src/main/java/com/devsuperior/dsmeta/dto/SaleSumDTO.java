@@ -21,6 +21,11 @@ public class SaleSumDTO {
 		sellerName = projection.getName();
 		total = projection.getTotal();
 	}
+	
+	public SaleSumDTO(SaleSumDTO entity) {
+		sellerName = entity.getSellerName();
+		total = entity.getTotal();
+	}
 
 	public String getSellerName() {
 		return sellerName;

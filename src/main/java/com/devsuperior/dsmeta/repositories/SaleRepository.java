@@ -37,8 +37,6 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 	Page<SaleSumDTO> saleSum(LocalDate initialDate, LocalDate finalDate, Pageable pageable);
 
 	
-	
-	
 	@Query(nativeQuery = true, value= "SELECT TB_SALES.ID, TB_SALES.DATE, TB_SALES.AMOUNT, TB_SELLER.NAME AS NAME "
 			+ "FROM TB_SALES "
 			+ "INNER JOIN TB_SELLER ON TB_SALES.SELLER_ID = TB_SELLER.ID "

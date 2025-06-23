@@ -43,10 +43,4 @@ public class SaleSumDTO {
 		this.total = total;
 	}
 
-	@Override
-	public String toString() {
-		return "SalesSumDTO [name=" + sellerName + ", total=" + total + "]";
-	}
-
-		
 }

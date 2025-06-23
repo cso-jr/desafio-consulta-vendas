@@ -11,8 +11,6 @@ public class SaleReportDTO {
 	private Double amount;
 	private String sellerName;
 	
-	
-	
 	public SaleReportDTO() {
 		
 	}
@@ -63,6 +61,4 @@ public class SaleReportDTO {
 	public void setSellerName(String sellerName) {
 		this.sellerName = sellerName;
 	}
-	
-
 }

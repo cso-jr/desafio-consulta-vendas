@@ -16,7 +16,6 @@ import com.devsuperior.dsmeta.dto.SaleReportDTO;
 import com.devsuperior.dsmeta.dto.SaleSumDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 import com.devsuperior.dsmeta.projections.SaleReportProjection;
-import com.devsuperior.dsmeta.projections.SaleSumProjection;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 
 @Service
